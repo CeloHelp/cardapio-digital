@@ -10,7 +10,7 @@ public record PedidoResponseDTO(
         String nomeCliente,
         String telefone,
         LocalDateTime dataHora,
-        String Status,
+        String status,
         BigDecimal total,
         List<ItemPedidoResumoDTO> itens
 

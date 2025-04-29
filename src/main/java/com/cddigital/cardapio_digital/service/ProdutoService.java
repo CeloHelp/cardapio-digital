@@ -22,9 +22,7 @@ public class ProdutoService {
     public ProdutoResponseDTO cadastrarProduto(final ProdutoRequestDTO produtoRequestDTO) {
         var produto = new Produto();
 
-        if(produto.getId() == null){
-            throw new RuntimeException(new Exception("sei la"));
-        }
+
         BeanUtils.copyProperties(produtoRequestDTO, produto);
         produtoRepository.save(produto);
 

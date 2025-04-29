@@ -8,11 +8,11 @@ import java.util.UUID;
 
 public record PedidoRequestDTO(
         @NotBlank
-        String nomeCliente,
-        @NotBlank
-        String telefone,
+        UUID idCliente,
         @NotEmpty
-        List <ItemPedidoDTO> itens
+        List <ItemPedidoRequestDTO> itens,
+        @NotEmpty
+        int quantidade
 ) {}
 
 
