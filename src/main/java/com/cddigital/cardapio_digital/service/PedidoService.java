@@ -3,6 +3,7 @@ package com.cddigital.cardapio_digital.service;
 import com.cddigital.cardapio_digital.dto.request.ItemPedidoRequestDTO;
 import com.cddigital.cardapio_digital.dto.request.PedidoRequestDTO;
 import com.cddigital.cardapio_digital.dto.response.ItemPedidoResumoDTO;
+import com.cddigital.cardapio_digital.dto.response.ListarPedidoDTO;
 import com.cddigital.cardapio_digital.dto.response.PedidoResponseDTO;
 import com.cddigital.cardapio_digital.entity.*;
 import com.cddigital.cardapio_digital.enums.StatusPedido;
@@ -83,4 +84,29 @@ public class PedidoService {
                 itensResumo
         );
     }
+
+    public List<ListarPedidoDTO> listarPedidos() {
+        return pedidoRepository.findAll()
+                .stream()
+                .map(pedido -> new ListarPedidoDTO(
+                        pedido.getId(),
+                        pedido.getItens().stream()
+                                .map(item -> new ItemPedidoResumoDTO(
+                                        item.getProduto().getNome(),
+                                        item.getProduto().getPreco(),
+                                        item.getQuantidade(),
+                                        item.getProduto().getPreco().multiply(BigDecimal.valueOf(item.getQuantidade()))
+
+                                ))
+                                .toList()
+                ))
+                .toList();
+    }
+
+
+
+
+
+
 }
+

@@ -2,16 +2,15 @@ package com.cddigital.cardapio_digital.controller;
 
 
 import com.cddigital.cardapio_digital.dto.request.PedidoRequestDTO;
+import com.cddigital.cardapio_digital.dto.response.ListarPedidoDTO;
 import com.cddigital.cardapio_digital.dto.response.PedidoResponseDTO;
 import com.cddigital.cardapio_digital.repository.ClienteRepository;
 import com.cddigital.cardapio_digital.service.PedidoService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/cardapio/v1/pedidos")
@@ -29,5 +28,16 @@ public class PedidoControllerV1 {
         URI location = URI.create("/cardapio/v1/pedidos" + pedidoResponseDTO.id());
         return ResponseEntity.created(location).body(pedidoResponseDTO);
     }
+
+    @GetMapping
+    public ResponseEntity <List<ListarPedidoDTO>> listarPedidos() {
+        List<ListarPedidoDTO> pedidos = pedidoService.listarPedidos();
+        URI location = URI.create("/cardapio/v1/listarPedidos");
+        return ResponseEntity.ok(pedidos);
+
+
+    }
+
+
 
 }
