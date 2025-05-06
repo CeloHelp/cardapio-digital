@@ -7,13 +7,14 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public record ProdutoRequestDTO(
-        @NotBlank(message = "O nome do produto deve ser informado.")
-        @Size(min = 3, message = "O nome do produto deve ter no mínimo 3 caracteres")
-        String Nome,
-        @NotBlank(message = "O produto deve conter uma descrição")
-        @Size(min = 20,message = "A descrição deve ter no mínimo 20 caracteres ")
+        //@NotBlank(message = "O nome do idProduto deve ser informado.")
+        @Size(min = 3, message = "O nome do idProduto deve ter no mínimo 3 caracteres")
+        String nome,
+        @NotBlank(message = "O idProduto deve conter uma descrição")
+        @Size(min = 10,message = "A descrição deve ter no mínimo 20 caracteres ")
         String descricao,
         BigDecimal preco,
-        UUID idCategoria
+        String imagemUrl,
+        UUID categoria
 ) {
 }
