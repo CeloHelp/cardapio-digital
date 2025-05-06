@@ -1,7 +1,9 @@
 package com.cddigital.cardapio_digital.controller;
 
 
+import com.cddigital.cardapio_digital.dto.request.AlterarStatusPedidoRequestDTO;
 import com.cddigital.cardapio_digital.dto.request.PedidoRequestDTO;
+import com.cddigital.cardapio_digital.dto.response.AlterarStatusPedidoResponseDTO;
 import com.cddigital.cardapio_digital.dto.response.ListarPedidoDTO;
 import com.cddigital.cardapio_digital.dto.response.PedidoResponseDTO;
 import com.cddigital.cardapio_digital.repository.ClienteRepository;
@@ -32,10 +34,16 @@ public class PedidoControllerV1 {
     @GetMapping
     public ResponseEntity <List<ListarPedidoDTO>> listarPedidos() {
         List<ListarPedidoDTO> pedidos = pedidoService.listarPedidos();
-        URI location = URI.create("/cardapio/v1/listarPedidos");
+        URI location = URI.create("/cardapio/v1/listarpedidos");
         return ResponseEntity.ok(pedidos);
 
 
+    }
+    @PatchMapping
+    public ResponseEntity AlterarStatusPedido(@RequestBody AlterarStatusPedidoRequestDTO alterarStatusPedidoRequestDTO) {
+        AlterarStatusPedidoResponseDTO response = pedidoService.alterarStatusPedido(alterarStatusPedidoRequestDTO);
+        URI location = URI.create("/cardapio/v1/status");
+        return ResponseEntity.ok(response);
     }
 
 

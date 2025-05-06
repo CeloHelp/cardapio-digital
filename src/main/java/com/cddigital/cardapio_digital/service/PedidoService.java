@@ -1,7 +1,9 @@
 package com.cddigital.cardapio_digital.service;
 
+import com.cddigital.cardapio_digital.dto.request.AlterarStatusPedidoRequestDTO;
 import com.cddigital.cardapio_digital.dto.request.ItemPedidoRequestDTO;
 import com.cddigital.cardapio_digital.dto.request.PedidoRequestDTO;
+import com.cddigital.cardapio_digital.dto.response.AlterarStatusPedidoResponseDTO;
 import com.cddigital.cardapio_digital.dto.response.ItemPedidoResumoDTO;
 import com.cddigital.cardapio_digital.dto.response.ListarPedidoDTO;
 import com.cddigital.cardapio_digital.dto.response.PedidoResponseDTO;
@@ -101,6 +103,26 @@ public class PedidoService {
                                 .toList()
                 ))
                 .toList();
+    }
+
+    public AlterarStatusPedidoResponseDTO alterarStatusPedido(AlterarStatusPedidoRequestDTO alterarStatusPedidoRequestDTO) {
+
+        Pedido pedido = pedidoRepository.findById(alterarStatusPedidoRequestDTO.idPedido())
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+        pedido.setStatusPedido(alterarStatusPedidoRequestDTO.novoStatus());
+
+        pedidoRepository.save(pedido);
+
+        return new AlterarStatusPedidoResponseDTO(
+                "Status do pedido " + pedido.getId() + " alterado com sucesso para " + pedido.getStatusPedido()
+        );
+
+
+
+
+
+
+
     }
 
 
