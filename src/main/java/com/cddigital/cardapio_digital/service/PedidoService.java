@@ -119,12 +119,49 @@ public class PedidoService {
 
 
 
-
-
-
-
     }
 
+    public List<ListarPedidoDTO> listarPedidosPorCliente(UUID idCliente) {
+        List<Pedido> pedidos = pedidoRepository.findByClienteId(idCliente);
+
+        return pedidos.stream()
+                .map(pedido -> new ListarPedidoDTO(
+                        pedido.getId(),
+                        pedido.getItens().stream()
+                                .map(item -> new ItemPedidoResumoDTO(
+                                        item.getProduto().getNome(),
+                                        item.getProduto().getPreco(),
+                                        item.getQuantidade(),
+                                        item.getProduto().getPreco().multiply(BigDecimal.valueOf(item.getQuantidade()))
+
+                                ))
+                                .toList()
+                ))
+                .toList();
+    }
+
+   public PedidoResponseDTO buscarPedidoPorId(UUID id) {
+        Pedido pedido = pedidoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+        List<ItemPedidoResumoDTO> itensResumo = pedido.getItens()
+                .stream()
+                .map(item -> new ItemPedidoResumoDTO(
+                        item.getProduto().getNome(),
+                        item.getProduto().getPreco(),
+                        item.getQuantidade(),
+                        item.getProduto().getPreco().multiply(BigDecimal.valueOf(item.getQuantidade()))
+                ))
+                .toList();
+        return new PedidoResponseDTO(
+                pedido.getId(),
+                pedido.getCliente().getNome(),
+                pedido.getCliente().getTelefone(),
+                pedido.getDataHora(),
+                pedido.getStatusPedido().name(),
+                pedido.getTotal(),
+                itensResumo
+        );
+   }
 
 
 
