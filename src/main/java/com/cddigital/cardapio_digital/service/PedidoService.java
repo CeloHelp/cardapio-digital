@@ -9,6 +9,8 @@ import com.cddigital.cardapio_digital.dto.response.ListarPedidoDTO;
 import com.cddigital.cardapio_digital.dto.response.PedidoResponseDTO;
 import com.cddigital.cardapio_digital.entity.*;
 import com.cddigital.cardapio_digital.enums.StatusPedido;
+import com.cddigital.cardapio_digital.exceptions.costumized.PedidoNaoEncontradoException;
+import com.cddigital.cardapio_digital.exceptions.costumized.ProdutoNaoEncontradoException;
 import com.cddigital.cardapio_digital.repository.PedidoRepository;
 import com.cddigital.cardapio_digital.repository.ProdutoRepository;
 
@@ -49,7 +51,7 @@ public class PedidoService {
         // Criar e calcular itens do pedido
         for (ItemPedidoRequestDTO itemDTO : pedidoRequestDTO.itens()) {
             Produto produto = produtoRepository.findById(itemDTO.idProduto())
-                    .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + itemDTO.idProduto()));
+                    .orElseThrow(() -> new ProdutoNaoEncontradoException(itemDTO.idProduto()));
 
             PedidoItem item = new PedidoItem();
             item.setProduto(produto);
@@ -108,7 +110,7 @@ public class PedidoService {
     public AlterarStatusPedidoResponseDTO alterarStatusPedido(AlterarStatusPedidoRequestDTO alterarStatusPedidoRequestDTO) {
 
         Pedido pedido = pedidoRepository.findById(alterarStatusPedidoRequestDTO.idPedido())
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+                .orElseThrow(() -> new PedidoNaoEncontradoException(alterarStatusPedidoRequestDTO.idPedido()));
         pedido.setStatusPedido(alterarStatusPedidoRequestDTO.novoStatus());
 
         pedidoRepository.save(pedido);
@@ -142,7 +144,7 @@ public class PedidoService {
 
    public PedidoResponseDTO buscarPedidoPorId(UUID id) {
         Pedido pedido = pedidoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+                .orElseThrow(() -> new PedidoNaoEncontradoException(id));
         List<ItemPedidoResumoDTO> itensResumo = pedido.getItens()
                 .stream()
                 .map(item -> new ItemPedidoResumoDTO(

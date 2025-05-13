@@ -3,6 +3,7 @@ package com.cddigital.cardapio_digital.service;
 import com.cddigital.cardapio_digital.dto.request.ClienteRequestDTO;
 import com.cddigital.cardapio_digital.dto.response.ClienteResponseDTO;
 import com.cddigital.cardapio_digital.entity.Cliente;
+import com.cddigital.cardapio_digital.exceptions.costumized.ClienteNaoEncontradoException;
 import com.cddigital.cardapio_digital.repository.ClienteRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,6 @@ public class ClienteService {
 
     public Cliente buscarClientePorId(UUID id) {
         return clienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado."));
+                .orElseThrow(() -> new ClienteNaoEncontradoException(id));
     }
 }
