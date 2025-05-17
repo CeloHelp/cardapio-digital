@@ -1,12 +1,16 @@
 package com.cddigital.cardapio_digital.service;
 
 import com.cddigital.cardapio_digital.dto.request.ProdutoRequestDTO;
+import com.cddigital.cardapio_digital.dto.response.ListarProdutoDTO;
 import com.cddigital.cardapio_digital.dto.response.ProdutoResponseDTO;
 import com.cddigital.cardapio_digital.entity.Produto;
 import com.cddigital.cardapio_digital.repository.ProdutoRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static jakarta.persistence.GenerationType.UUID;
 
@@ -36,5 +40,12 @@ public class ProdutoService {
         );
 
     }
+
+public List<ListarProdutoDTO> listarProdutos() {
+        return produtoRepository.findAll()
+                .stream()
+                .map(ListarProdutoDTO::fromEntity)
+                .collect(Collectors.toList());
+}
 
 }

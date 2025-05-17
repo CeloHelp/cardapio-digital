@@ -1,16 +1,15 @@
 package com.cddigital.cardapio_digital.controller;
 
 import com.cddigital.cardapio_digital.dto.request.ProdutoRequestDTO;
+import com.cddigital.cardapio_digital.dto.response.ListarProdutoDTO;
 import com.cddigital.cardapio_digital.dto.response.ProdutoResponseDTO;
 import com.cddigital.cardapio_digital.service.ProdutoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/cardapio/v1/produtos")
@@ -28,6 +27,12 @@ public class ProdutoControllerV1 {
         URI location = URI.create("/cardapio/v1/produtos" + response.id());
 
         return ResponseEntity.created(location).body(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ListarProdutoDTO>> listarProdutos(){
+        List<ListarProdutoDTO> produtos= produtoService.listarProdutos();
+        return ResponseEntity.ok(produtos);
     }
 
 }
