@@ -115,8 +115,7 @@ public class PedidoService {
 
         pedidoRepository.save(pedido);
 
-        return new AlterarStatusPedidoResponseDTO(
-                "Status do pedido " + pedido.getId() + " alterado com sucesso para " + pedido.getStatusPedido()
+        return new AlterarStatusPedidoResponseDTO("Status do pedido " + pedido.getId() + " alterado com sucesso para " + pedido.getStatusPedido()
         );
 
 

@@ -11,6 +11,8 @@ public record ProdutoResponseDTO(
         String descricao,
         BigDecimal preco,
         String imagemUrl,
-        Categoria categoria
+        Categoria categoria,
+        String status
 ) {
+
 }

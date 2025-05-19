@@ -1,6 +1,8 @@
 package com.cddigital.cardapio_digital.controller;
 
+import com.cddigital.cardapio_digital.dto.request.AlterarStatusProdutoRequestDTO;
 import com.cddigital.cardapio_digital.dto.request.ProdutoRequestDTO;
+import com.cddigital.cardapio_digital.dto.response.AlterarStatusProdutoResponseDTO;
 import com.cddigital.cardapio_digital.dto.response.ListarProdutoDTO;
 import com.cddigital.cardapio_digital.dto.response.ProdutoResponseDTO;
 import com.cddigital.cardapio_digital.service.ProdutoService;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/cardapio/v1/produtos")
@@ -33,6 +36,12 @@ public class ProdutoControllerV1 {
     public ResponseEntity<List<ListarProdutoDTO>> listarProdutos(){
         List<ListarProdutoDTO> produtos= produtoService.listarProdutos();
         return ResponseEntity.ok(produtos);
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<AlterarStatusProdutoResponseDTO> alterarStatusProduto(@PathVariable UUID id, @RequestBody @Valid AlterarStatusProdutoRequestDTO alterarProdutoRequestDTO){
+        AlterarStatusProdutoResponseDTO response = produtoService.AlterarStatusProduto(alterarProdutoRequestDTO);
+        return ResponseEntity.ok(response);
     }
 
 }
