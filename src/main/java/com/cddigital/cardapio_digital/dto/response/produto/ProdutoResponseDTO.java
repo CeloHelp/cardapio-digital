@@ -1,4 +1,4 @@
-package com.cddigital.cardapio_digital.dto.response;
+package com.cddigital.cardapio_digital.dto.response.produto;
 
 import com.cddigital.cardapio_digital.entity.Categoria;
 

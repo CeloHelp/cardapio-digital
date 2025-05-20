@@ -1,6 +1,5 @@
-package com.cddigital.cardapio_digital.dto.request;
+package com.cddigital.cardapio_digital.dto.request.pedido;
 
-import com.cddigital.cardapio_digital.enums.StatusGlobal;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 

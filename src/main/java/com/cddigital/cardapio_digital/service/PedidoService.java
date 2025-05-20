@@ -1,12 +1,12 @@
 package com.cddigital.cardapio_digital.service;
 
-import com.cddigital.cardapio_digital.dto.request.AlterarStatusPedidoRequestDTO;
-import com.cddigital.cardapio_digital.dto.request.ItemPedidoRequestDTO;
-import com.cddigital.cardapio_digital.dto.request.PedidoRequestDTO;
-import com.cddigital.cardapio_digital.dto.response.AlterarStatusPedidoResponseDTO;
-import com.cddigital.cardapio_digital.dto.response.ItemPedidoResumoDTO;
-import com.cddigital.cardapio_digital.dto.response.ListarPedidoDTO;
-import com.cddigital.cardapio_digital.dto.response.PedidoResponseDTO;
+import com.cddigital.cardapio_digital.dto.request.pedido.AlterarStatusPedidoRequestDTO;
+import com.cddigital.cardapio_digital.dto.request.pedido.ItemPedidoRequestDTO;
+import com.cddigital.cardapio_digital.dto.request.pedido.PedidoRequestDTO;
+import com.cddigital.cardapio_digital.dto.response.pedido.AlterarStatusPedidoResponseDTO;
+import com.cddigital.cardapio_digital.dto.response.pedido.ItemPedidoResumoDTO;
+import com.cddigital.cardapio_digital.dto.response.pedido.ListarPedidoDTO;
+import com.cddigital.cardapio_digital.dto.response.pedido.PedidoResponseDTO;
 import com.cddigital.cardapio_digital.entity.*;
 import com.cddigital.cardapio_digital.enums.StatusPedido;
 import com.cddigital.cardapio_digital.exceptions.costumized.PedidoNaoEncontradoException;

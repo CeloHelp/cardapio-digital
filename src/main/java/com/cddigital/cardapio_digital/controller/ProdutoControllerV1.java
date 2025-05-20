@@ -1,10 +1,10 @@
 package com.cddigital.cardapio_digital.controller;
 
-import com.cddigital.cardapio_digital.dto.request.AlterarStatusProdutoRequestDTO;
-import com.cddigital.cardapio_digital.dto.request.ProdutoRequestDTO;
-import com.cddigital.cardapio_digital.dto.response.AlterarStatusProdutoResponseDTO;
-import com.cddigital.cardapio_digital.dto.response.ListarProdutoDTO;
-import com.cddigital.cardapio_digital.dto.response.ProdutoResponseDTO;
+import com.cddigital.cardapio_digital.dto.request.produto.AlterarStatusProdutoRequestDTO;
+import com.cddigital.cardapio_digital.dto.request.produto.ProdutoRequestDTO;
+import com.cddigital.cardapio_digital.dto.response.produto.AlterarStatusProdutoResponseDTO;
+import com.cddigital.cardapio_digital.dto.response.produto.ListarProdutoDTO;
+import com.cddigital.cardapio_digital.dto.response.produto.ProdutoResponseDTO;
 import com.cddigital.cardapio_digital.service.ProdutoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

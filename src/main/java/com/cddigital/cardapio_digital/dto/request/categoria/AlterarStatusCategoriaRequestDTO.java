@@ -1,4 +1,4 @@
-package com.cddigital.cardapio_digital.dto.request;
+package com.cddigital.cardapio_digital.dto.request.categoria;
 
 import com.cddigital.cardapio_digital.enums.StatusGlobal;
 

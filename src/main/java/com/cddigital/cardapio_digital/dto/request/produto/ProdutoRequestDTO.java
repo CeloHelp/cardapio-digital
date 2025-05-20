@@ -1,4 +1,4 @@
-package com.cddigital.cardapio_digital.dto.request;
+package com.cddigital.cardapio_digital.dto.request.produto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

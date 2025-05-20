@@ -1,4 +1,4 @@
-package com.cddigital.cardapio_digital.dto.response;
+package com.cddigital.cardapio_digital.dto.response.cliente;
 
 import java.util.UUID;
 

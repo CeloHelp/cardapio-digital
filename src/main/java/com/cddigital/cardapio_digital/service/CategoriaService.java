@@ -1,11 +1,9 @@
 package com.cddigital.cardapio_digital.service;
 
-import com.cddigital.cardapio_digital.dto.request.AlterarStatusCategoriaRequestDTO;
-import com.cddigital.cardapio_digital.dto.request.AlterarStatusClienteRequestDTO;
-import com.cddigital.cardapio_digital.dto.request.CategoriaRequestDTO;
-import com.cddigital.cardapio_digital.dto.response.AlterarStatusCategoriaResponseDTO;
-import com.cddigital.cardapio_digital.dto.response.AlterarStatusClienteResponseDTO;
-import com.cddigital.cardapio_digital.dto.response.CategoriaResponseDTO;
+import com.cddigital.cardapio_digital.dto.request.categoria.AlterarStatusCategoriaRequestDTO;
+import com.cddigital.cardapio_digital.dto.request.categoria.CategoriaRequestDTO;
+import com.cddigital.cardapio_digital.dto.response.categoria.AlterarStatusCategoriaResponseDTO;
+import com.cddigital.cardapio_digital.dto.response.categoria.CategoriaResponseDTO;
 import com.cddigital.cardapio_digital.entity.Categoria;
 import com.cddigital.cardapio_digital.enums.StatusGlobal;
 import com.cddigital.cardapio_digital.exceptions.costumized.CategoriaNaoEncontradaException;

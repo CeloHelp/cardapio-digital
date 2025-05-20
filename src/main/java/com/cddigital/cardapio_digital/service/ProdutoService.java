@@ -1,10 +1,10 @@
 package com.cddigital.cardapio_digital.service;
 
-import com.cddigital.cardapio_digital.dto.request.AlterarStatusProdutoRequestDTO;
-import com.cddigital.cardapio_digital.dto.request.ProdutoRequestDTO;
-import com.cddigital.cardapio_digital.dto.response.AlterarStatusProdutoResponseDTO;
-import com.cddigital.cardapio_digital.dto.response.ListarProdutoDTO;
-import com.cddigital.cardapio_digital.dto.response.ProdutoResponseDTO;
+import com.cddigital.cardapio_digital.dto.request.produto.AlterarStatusProdutoRequestDTO;
+import com.cddigital.cardapio_digital.dto.request.produto.ProdutoRequestDTO;
+import com.cddigital.cardapio_digital.dto.response.produto.AlterarStatusProdutoResponseDTO;
+import com.cddigital.cardapio_digital.dto.response.produto.ListarProdutoDTO;
+import com.cddigital.cardapio_digital.dto.response.produto.ProdutoResponseDTO;
 import com.cddigital.cardapio_digital.entity.Produto;
 import com.cddigital.cardapio_digital.enums.StatusGlobal;
 import com.cddigital.cardapio_digital.exceptions.costumized.ProdutoNaoEncontradoException;
@@ -67,5 +67,7 @@ public AlterarStatusProdutoResponseDTO AlterarStatusProduto(AlterarStatusProduto
                 "Produto" + produto.getId() + " alterado com sucesso para " + produto.getStatus()
         );
 }
+
+
 
 }
