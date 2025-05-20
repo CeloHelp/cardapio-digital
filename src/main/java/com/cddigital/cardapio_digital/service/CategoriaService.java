@@ -1,8 +1,14 @@
 package com.cddigital.cardapio_digital.service;
 
+import com.cddigital.cardapio_digital.dto.request.AlterarStatusCategoriaRequestDTO;
+import com.cddigital.cardapio_digital.dto.request.AlterarStatusClienteRequestDTO;
 import com.cddigital.cardapio_digital.dto.request.CategoriaRequestDTO;
+import com.cddigital.cardapio_digital.dto.response.AlterarStatusCategoriaResponseDTO;
+import com.cddigital.cardapio_digital.dto.response.AlterarStatusClienteResponseDTO;
 import com.cddigital.cardapio_digital.dto.response.CategoriaResponseDTO;
 import com.cddigital.cardapio_digital.entity.Categoria;
+import com.cddigital.cardapio_digital.enums.StatusGlobal;
+import com.cddigital.cardapio_digital.exceptions.costumized.CategoriaNaoEncontradaException;
 import com.cddigital.cardapio_digital.repository.CategoriaRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +27,8 @@ public class CategoriaService {
     public CategoriaResponseDTO cadastrarCategoria(CategoriaRequestDTO categoriaRequestDTO) {
         var categoria = new Categoria();
 
+        categoria.setStatus(StatusGlobal.ATIVO);
+
 
 
         BeanUtils.copyProperties(categoriaRequestDTO, categoria);
@@ -31,6 +39,19 @@ public class CategoriaService {
                 categoria.getId(),
                 categoria.getNome()
         );
+    }
+
+    public AlterarStatusCategoriaResponseDTO alterarStatusCategoria(AlterarStatusCategoriaRequestDTO alterarStatusCategoriaRequestDTO) {
+        Categoria categoria = categoriaRepository.findById(alterarStatusCategoriaRequestDTO.idCategoria())
+                .orElseThrow(() -> new CategoriaNaoEncontradaException(alterarStatusCategoriaRequestDTO.idCategoria()));
+
+        categoria.setStatus(StatusGlobal.INATIVO);
+        categoriaRepository.save(categoria);
+
+        return new AlterarStatusCategoriaResponseDTO(
+                "Categoria " + categoria.getNome() + " Alterado com sucesso para: " + categoria.getStatus()
+        );
+
     }
 
 

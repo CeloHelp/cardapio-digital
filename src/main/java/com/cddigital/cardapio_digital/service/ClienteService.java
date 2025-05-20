@@ -1,8 +1,11 @@
 package com.cddigital.cardapio_digital.service;
 
+import com.cddigital.cardapio_digital.dto.request.AlterarStatusClienteRequestDTO;
 import com.cddigital.cardapio_digital.dto.request.ClienteRequestDTO;
+import com.cddigital.cardapio_digital.dto.response.AlterarStatusClienteResponseDTO;
 import com.cddigital.cardapio_digital.dto.response.ClienteResponseDTO;
 import com.cddigital.cardapio_digital.entity.Cliente;
+import com.cddigital.cardapio_digital.enums.StatusGlobal;
 import com.cddigital.cardapio_digital.exceptions.costumized.ClienteNaoEncontradoException;
 import com.cddigital.cardapio_digital.repository.ClienteRepository;
 import org.springframework.beans.BeanUtils;
@@ -23,6 +26,8 @@ public class ClienteService {
     public ClienteResponseDTO cadastrarCliente(ClienteRequestDTO clienteRequestDTO) {
         var cliente = new Cliente();
 
+        cliente.setStatus(StatusGlobal.ATIVO);
+
         BeanUtils.copyProperties(clienteRequestDTO, cliente);
         clienteRepository.save(cliente);
 
@@ -30,12 +35,25 @@ public class ClienteService {
             cliente.getId(),
             cliente.getNome(),
             cliente.getTelefone(),
-            cliente.getEmail()
+            cliente.getEmail(),
+                cliente.getStatus()
         );
     }
 
     public Cliente buscarClientePorId(UUID id) {
         return clienteRepository.findById(id)
                 .orElseThrow(() -> new ClienteNaoEncontradoException(id));
+    }
+
+    public AlterarStatusClienteResponseDTO alterarStatusCliente(AlterarStatusClienteRequestDTO alterarClienteRequestDTO) {
+        Cliente cliente = clienteRepository.findById(alterarClienteRequestDTO.idCliente())
+                .orElseThrow(() -> new ClienteNaoEncontradoException(alterarClienteRequestDTO.idCliente()));
+
+        cliente.setStatus(StatusGlobal.INATIVO);
+        clienteRepository.save(cliente);
+
+        return new AlterarStatusClienteResponseDTO(
+                "Cliente" + cliente.getId() + "Alterado com sucesso para: " + cliente.getStatus()
+        );
     }
 }

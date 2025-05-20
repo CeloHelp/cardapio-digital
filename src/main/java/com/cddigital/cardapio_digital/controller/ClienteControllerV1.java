@@ -1,16 +1,16 @@
 package com.cddigital.cardapio_digital.controller;
 
+import com.cddigital.cardapio_digital.dto.request.AlterarStatusClienteRequestDTO;
 import com.cddigital.cardapio_digital.dto.request.ClienteRequestDTO;
+import com.cddigital.cardapio_digital.dto.response.AlterarStatusClienteResponseDTO;
 import com.cddigital.cardapio_digital.dto.response.ClienteResponseDTO;
-import com.cddigital.cardapio_digital.entity.Cliente;
 import com.cddigital.cardapio_digital.service.ClienteService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/cardapio/v1/clientes")
@@ -30,4 +30,11 @@ public class ClienteControllerV1 {
 
     }
 
+    @PatchMapping("{id}/status")
+    public ResponseEntity<AlterarStatusClienteResponseDTO> atualizarCliente(@PathVariable UUID id, @RequestBody @Valid AlterarStatusClienteRequestDTO alterarStatusClienteRequestDTO) {
+        AlterarStatusClienteResponseDTO response = clienteService.alterarStatusCliente(alterarStatusClienteRequestDTO);
+
+               return ResponseEntity.ok(response);
+
+    }
 }
