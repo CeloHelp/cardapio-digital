@@ -123,25 +123,34 @@ public class PedidoService {
     }
 
     public List<ListarPedidoDTO> listarPedidosPorCliente(UUID idCliente) {
+
+        // Busca todos os pedidos feitos pelo cliente com base no ID
         List<Pedido> pedidos = pedidoRepository.findByClienteId(idCliente);
 
+        // Converte a lista de pedidos em uma lista de DTOs resumidos
         return pedidos.stream()
+
+                // Transforma cada Pedido em um ListarPedidoDTO
                 .map(pedido -> new ListarPedidoDTO(
                         pedido.getId(),
+
+                        // Para cada item do pedido, criamos um resumo com as informações necessárias
                         pedido.getItens().stream()
                                 .map(item -> new ItemPedidoResumoDTO(
-                                        item.getProduto().getNome(),
-                                        item.getProduto().getPreco(),
-                                        item.getQuantidade(),
-                                        item.getProduto().getPreco().multiply(BigDecimal.valueOf(item.getQuantidade()))
-
+                                        item.getProduto().getNome(),                                // Nome do produto
+                                        item.getProduto().getPreco(),                               // Preço unitário
+                                        item.getQuantidade(),                                       // Quantidade comprada
+                                        item.getProduto().getPreco()                                // Preço x Quantidade
+                                                .multiply(BigDecimal.valueOf(item.getQuantidade()))
                                 ))
-                                .toList()
+                                .toList() // Coletamos todos os itens transformados em uma lista
                 ))
-                .toList();
+
+                .toList(); // Coletamos todos os pedidos transformados em uma lista final
     }
 
-   public PedidoResponseDTO buscarPedidoPorId(UUID id) {
+
+    public PedidoResponseDTO buscarPedidoPorId(UUID id) {
         Pedido pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new PedidoNaoEncontradoException(id));
         List<ItemPedidoResumoDTO> itensResumo = pedido.getItens()

@@ -1,8 +1,10 @@
 package com.cddigital.cardapio_digital.service;
 
 import com.cddigital.cardapio_digital.dto.request.produto.AlterarStatusProdutoRequestDTO;
+import com.cddigital.cardapio_digital.dto.request.produto.EditarProdutoRequestDTO;
 import com.cddigital.cardapio_digital.dto.request.produto.ProdutoRequestDTO;
 import com.cddigital.cardapio_digital.dto.response.produto.AlterarStatusProdutoResponseDTO;
+import com.cddigital.cardapio_digital.dto.response.produto.EditarProdutoResponseDTO;
 import com.cddigital.cardapio_digital.dto.response.produto.ListarProdutoDTO;
 import com.cddigital.cardapio_digital.dto.response.produto.ProdutoResponseDTO;
 import com.cddigital.cardapio_digital.entity.Produto;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
@@ -60,14 +63,35 @@ public AlterarStatusProdutoResponseDTO AlterarStatusProduto(AlterarStatusProduto
         Produto produto = produtoRepository.findById(inativarProdutoRequestDTO.idProduto())
                 .orElseThrow(()  -> new ProdutoNaoEncontradoException(inativarProdutoRequestDTO.idProduto()));
 
-        produto.setStatus(StatusGlobal.INATIVO);
-        produtoRepository.save(produto);
+    produtoRepository.save(produto);
 
         return new AlterarStatusProdutoResponseDTO(
                 "Produto" + produto.getId() + " alterado com sucesso para " + produto.getStatus()
         );
+
+
 }
 
+public EditarProdutoResponseDTO editarProduto(UUID id, EditarProdutoRequestDTO editarProdutoRequestDTO) {
+        Produto produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new ProdutoNaoEncontradoException(id));
 
+
+
+        BeanUtils.copyProperties(editarProdutoRequestDTO, produto, "id");
+
+        produtoRepository.save(produto);
+
+        return new EditarProdutoResponseDTO(
+                produto.getId(),
+                produto.getNome(),
+                produto.getDescricao(),
+                produto.getPreco(),
+                produto.getImagemUrl()
+
+        );
+
+
+}
 
 }

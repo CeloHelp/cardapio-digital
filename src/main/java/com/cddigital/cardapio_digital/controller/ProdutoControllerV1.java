@@ -1,8 +1,10 @@
 package com.cddigital.cardapio_digital.controller;
 
 import com.cddigital.cardapio_digital.dto.request.produto.AlterarStatusProdutoRequestDTO;
+import com.cddigital.cardapio_digital.dto.request.produto.EditarProdutoRequestDTO;
 import com.cddigital.cardapio_digital.dto.request.produto.ProdutoRequestDTO;
 import com.cddigital.cardapio_digital.dto.response.produto.AlterarStatusProdutoResponseDTO;
+import com.cddigital.cardapio_digital.dto.response.produto.EditarProdutoResponseDTO;
 import com.cddigital.cardapio_digital.dto.response.produto.ListarProdutoDTO;
 import com.cddigital.cardapio_digital.dto.response.produto.ProdutoResponseDTO;
 import com.cddigital.cardapio_digital.service.ProdutoService;
@@ -41,6 +43,12 @@ public class ProdutoControllerV1 {
     @PatchMapping("/{id}/status")
     public ResponseEntity<AlterarStatusProdutoResponseDTO> alterarStatusProduto(@PathVariable UUID id, @RequestBody @Valid AlterarStatusProdutoRequestDTO alterarProdutoRequestDTO){
         AlterarStatusProdutoResponseDTO response = produtoService.AlterarStatusProduto(alterarProdutoRequestDTO);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<EditarProdutoResponseDTO> editarProduto(@PathVariable UUID id, @RequestBody @Valid EditarProdutoRequestDTO editarProdutoRequestDTO){
+        EditarProdutoResponseDTO response = produtoService.editarProduto(id, editarProdutoRequestDTO);
         return ResponseEntity.ok(response);
     }
 
