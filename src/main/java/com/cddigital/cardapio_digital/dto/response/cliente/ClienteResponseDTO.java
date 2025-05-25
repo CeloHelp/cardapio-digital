@@ -6,5 +6,8 @@ public record ClienteResponseDTO(
         UUID id,
         String nome,
         String telefone,
-        String email, com.cddigital.cardapio_digital.enums.StatusGlobal status) {
+        String email,
+        com.cddigital.cardapio_digital.enums.StatusGlobal status,
+        String endereco,
+        int numero) {
 }

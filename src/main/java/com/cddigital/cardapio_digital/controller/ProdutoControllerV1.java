@@ -36,11 +36,11 @@ public class ProdutoControllerV1 {
 
     @GetMapping
     public ResponseEntity<List<ListarProdutoDTO>> listarProdutos(){
-        List<ListarProdutoDTO> produtos= produtoService.listarProdutos();
+        List<ListarProdutoDTO> produtos = produtoService.listarProdutos();
         return ResponseEntity.ok(produtos);
     }
 
-    @PatchMapping("/{id}/status")
+    @PatchMapping("{id}/status")
     public ResponseEntity<AlterarStatusProdutoResponseDTO> alterarStatusProduto(@PathVariable UUID id, @RequestBody @Valid AlterarStatusProdutoRequestDTO alterarProdutoRequestDTO){
         AlterarStatusProdutoResponseDTO response = produtoService.AlterarStatusProduto(alterarProdutoRequestDTO);
         return ResponseEntity.ok(response);

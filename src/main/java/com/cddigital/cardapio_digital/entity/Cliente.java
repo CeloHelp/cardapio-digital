@@ -15,6 +15,8 @@ public class Cliente {
     private String nome;
     private String telefone;
     private String email;
+    private String endereco;
+    private int numero;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -52,4 +54,17 @@ public class Cliente {
     public void setStatus(StatusGlobal status) {
         this.status = status;
     }
+    public String getEndereco() {
+        return endereco;
+    }
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+    public int getNumero() {
+        return numero;
+    }
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
 }
