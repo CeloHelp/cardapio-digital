@@ -1,4 +1,4 @@
-package com.cddigital.cardapio_digital.dto.request;
+package com.cddigital.cardapio_digital.dto.request.pedido;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;

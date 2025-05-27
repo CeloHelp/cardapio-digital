@@ -1,14 +1,16 @@
 package com.cddigital.cardapio_digital.service;
 
-import com.cddigital.cardapio_digital.dto.request.AlterarStatusPedidoRequestDTO;
-import com.cddigital.cardapio_digital.dto.request.ItemPedidoRequestDTO;
-import com.cddigital.cardapio_digital.dto.request.PedidoRequestDTO;
-import com.cddigital.cardapio_digital.dto.response.AlterarStatusPedidoResponseDTO;
-import com.cddigital.cardapio_digital.dto.response.ItemPedidoResumoDTO;
-import com.cddigital.cardapio_digital.dto.response.ListarPedidoDTO;
-import com.cddigital.cardapio_digital.dto.response.PedidoResponseDTO;
+import com.cddigital.cardapio_digital.dto.request.pedido.AlterarStatusPedidoRequestDTO;
+import com.cddigital.cardapio_digital.dto.request.pedido.ItemPedidoRequestDTO;
+import com.cddigital.cardapio_digital.dto.request.pedido.PedidoRequestDTO;
+import com.cddigital.cardapio_digital.dto.response.pedido.AlterarStatusPedidoResponseDTO;
+import com.cddigital.cardapio_digital.dto.response.pedido.ItemPedidoResumoDTO;
+import com.cddigital.cardapio_digital.dto.response.pedido.ListarPedidoDTO;
+import com.cddigital.cardapio_digital.dto.response.pedido.PedidoResponseDTO;
 import com.cddigital.cardapio_digital.entity.*;
 import com.cddigital.cardapio_digital.enums.StatusPedido;
+import com.cddigital.cardapio_digital.exceptions.costumized.PedidoNaoEncontradoException;
+import com.cddigital.cardapio_digital.exceptions.costumized.ProdutoNaoEncontradoException;
 import com.cddigital.cardapio_digital.repository.PedidoRepository;
 import com.cddigital.cardapio_digital.repository.ProdutoRepository;
 
@@ -49,7 +51,7 @@ public class PedidoService {
         // Criar e calcular itens do pedido
         for (ItemPedidoRequestDTO itemDTO : pedidoRequestDTO.itens()) {
             Produto produto = produtoRepository.findById(itemDTO.idProduto())
-                    .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + itemDTO.idProduto()));
+                    .orElseThrow(() -> new ProdutoNaoEncontradoException(itemDTO.idProduto()));
 
             PedidoItem item = new PedidoItem();
             item.setProduto(produto);
@@ -67,24 +69,9 @@ public class PedidoService {
 
         pedidoRepository.save(pedido);
 
-        // Montar resposta
-        List<ItemPedidoResumoDTO> itensResumo = itens.stream()
-                .map(item -> new ItemPedidoResumoDTO(
-                        item.getProduto().getNome(),
-                        item.getProduto().getPreco(),
-                        item.getQuantidade(),
-                        item.getProduto().getPreco().multiply(BigDecimal.valueOf(item.getQuantidade()))
-                )).toList();
 
-        return new PedidoResponseDTO(
-                pedido.getId(),
-                cliente.getNome(),
-                cliente.getTelefone(),
-                pedido.getDataHora(),
-                pedido.getStatusPedido().name(),
-                pedido.getTotal(),
-                itensResumo
-        );
+
+        return PedidoResponseDTO.fromEntity(pedido);
     }
 
     public List<ListarPedidoDTO> listarPedidos() {
@@ -105,25 +92,47 @@ public class PedidoService {
                 .toList();
     }
 
+
     public AlterarStatusPedidoResponseDTO alterarStatusPedido(AlterarStatusPedidoRequestDTO alterarStatusPedidoRequestDTO) {
 
         Pedido pedido = pedidoRepository.findById(alterarStatusPedidoRequestDTO.idPedido())
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+                .orElseThrow(() -> new PedidoNaoEncontradoException(alterarStatusPedidoRequestDTO.idPedido()));
         pedido.setStatusPedido(alterarStatusPedidoRequestDTO.novoStatus());
 
         pedidoRepository.save(pedido);
 
-        return new AlterarStatusPedidoResponseDTO(
-                "Status do pedido " + pedido.getId() + " alterado com sucesso para " + pedido.getStatusPedido()
+        return new AlterarStatusPedidoResponseDTO("Status do pedido " + pedido.getId() + " alterado com sucesso para " + pedido.getStatusPedido()
         );
 
 
+    }
 
+    public List<ListarPedidoDTO> listarPedidosPorCliente(UUID idCliente) {
+        // Busca todos os pedidos feitos pelo cliente com base no ID
+        List<Pedido> pedidos = pedidoRepository.findByClienteId(idCliente);
 
+        // Converte a lista de pedidos em uma lista de DTOs resumidos
+        return pedidos.stream()
+                .map(pedido -> new ListarPedidoDTO(
+                        pedido.getId(),
+                        pedido.getItens().stream()
+                                .map(ItemPedidoResumoDTO::fromEntity)
+                                .toList()
+                ))
+                .toList();
 
 
 
     }
+
+
+    public PedidoResponseDTO buscarPedidoPorId(UUID id) {
+        Pedido pedido = pedidoRepository.findById(id)
+                .orElseThrow(() -> new PedidoNaoEncontradoException(id));
+       return PedidoResponseDTO.fromEntity(pedido);
+   }
+
+
 
 
 

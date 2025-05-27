@@ -1,6 +1,5 @@
-package com.cddigital.cardapio_digital.dto.request;
+package com.cddigital.cardapio_digital.dto.request.pedido;
 
-import com.cddigital.cardapio_digital.entity.Produto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 

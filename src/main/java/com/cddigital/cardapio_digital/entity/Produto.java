@@ -1,5 +1,6 @@
 package com.cddigital.cardapio_digital.entity;
 
+import com.cddigital.cardapio_digital.enums.StatusGlobal;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -15,6 +16,10 @@ public class Produto {
     private String descricao;
     private BigDecimal preco;
     private String imagemUrl;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusGlobal status = StatusGlobal.ATIVO;
     @ManyToOne
    private  Categoria categoria;
 
@@ -33,6 +38,13 @@ public class Produto {
     }
     public String getDescricao() {
         return descricao;
+    }
+    public String getStatus() {
+        return status.toString();
+    }
+
+    public void setStatus(StatusGlobal status) {
+        this.status = status;
     }
 
     public void setDescricao(String descricao) {
