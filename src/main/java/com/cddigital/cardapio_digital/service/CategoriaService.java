@@ -40,10 +40,7 @@ public class CategoriaService {
 
         categoriaRepository.save(categoria);
 
-        return new CategoriaResponseDTO(
-                categoria.getId(),
-                categoria.getNome()
-        );
+        return CategoriaResponseDTO.fromEntity(categoria);
     }
 
     public AlterarStatusCategoriaResponseDTO alterarStatusCategoria(AlterarStatusCategoriaRequestDTO alterarStatusCategoriaRequestDTO) {
@@ -66,9 +63,7 @@ public class CategoriaService {
         BeanUtils.copyProperties(editarCategoriaRequestDTO, categoria);
 
         categoriaRepository.save(categoria);
-        return new EditarCategoriaResponseDTO(
-                categoria.getNome()
-        );
+        return EditarCategoriaResponseDTO.fromEntity(categoria);
     }
 
     public List<ListarCategoriaDTO> listarCategoria() {

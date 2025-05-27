@@ -37,15 +37,7 @@ public class ClienteService {
         BeanUtils.copyProperties(clienteRequestDTO, cliente);
         clienteRepository.save(cliente);
 
-        return new ClienteResponseDTO(
-            cliente.getId(),
-            cliente.getNome(),
-            cliente.getTelefone(),
-            cliente.getEmail(),
-                cliente.getStatus(),
-                cliente.getEndereco(),
-                cliente.getNumero()
-        );
+        return ClienteResponseDTO.fromEntity(cliente);
     }
 
     public Cliente buscarClientePorId(UUID id) {
@@ -79,12 +71,7 @@ public class ClienteService {
 
         clienteRepository.save(cliente);
 
-        return new EditarClienteResponseDTO(
-                cliente.getNome(),
-                cliente.getTelefone(),
-                cliente.getEmail(),
-                cliente.getEndereco(),
-                cliente.getNumero()
-        );
+        return EditarClienteResponseDTO.fromEntity(cliente);
+
     }
 }

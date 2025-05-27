@@ -39,16 +39,7 @@ public class ProdutoService {
         BeanUtils.copyProperties(produtoRequestDTO, produto);
         produtoRepository.save(produto);
 
-        return new ProdutoResponseDTO(
-               produto.getId(),
-                produto.getNome(),
-                produto.getDescricao(),
-                produto.getPreco(),
-                produto.getImagemUrl(),
-                produto.getCategoria(),
-                produto.getStatus()
-
-        );
+        return  ProdutoResponseDTO.fromEntity(produto);
 
     }
 
@@ -79,17 +70,9 @@ public EditarProdutoResponseDTO editarProduto(UUID id, EditarProdutoRequestDTO e
 
 
         BeanUtils.copyProperties(editarProdutoRequestDTO, produto, "id");
-
         produtoRepository.save(produto);
 
-        return new EditarProdutoResponseDTO(
-                produto.getId(),
-                produto.getNome(),
-                produto.getDescricao(),
-                produto.getPreco(),
-                produto.getImagemUrl()
-
-        );
+        return EditarProdutoResponseDTO.fromEntity(produto);
 
 
 }
