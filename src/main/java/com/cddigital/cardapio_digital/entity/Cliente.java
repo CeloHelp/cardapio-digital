@@ -1,5 +1,6 @@
 package com.cddigital.cardapio_digital.entity;
 
+import com.cddigital.cardapio_digital.enums.StatusGlobal;
 import jakarta.persistence.*;
 
 import java.util.UUID;
@@ -14,6 +15,12 @@ public class Cliente {
     private String nome;
     private String telefone;
     private String email;
+    private String endereco;
+    private int numero;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusGlobal status = StatusGlobal.ATIVO;
 
     public UUID getId() {
         return id;
@@ -40,4 +47,24 @@ public class Cliente {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public StatusGlobal getStatus() {
+        return status;
+    }
+    public void setStatus(StatusGlobal status) {
+        this.status = status;
+    }
+    public String getEndereco() {
+        return endereco;
+    }
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+    public int getNumero() {
+        return numero;
+    }
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
 }

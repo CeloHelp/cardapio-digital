@@ -1,10 +1,10 @@
 package com.cddigital.cardapio_digital.controller;
 
-import com.cddigital.cardapio_digital.dto.request.AlterarStatusPedidoRequestDTO;
-import com.cddigital.cardapio_digital.dto.request.PedidoRequestDTO;
-import com.cddigital.cardapio_digital.dto.response.AlterarStatusPedidoResponseDTO;
-import com.cddigital.cardapio_digital.dto.response.ListarPedidoDTO;
-import com.cddigital.cardapio_digital.dto.response.PedidoResponseDTO;
+import com.cddigital.cardapio_digital.dto.request.pedido.AlterarStatusPedidoRequestDTO;
+import com.cddigital.cardapio_digital.dto.request.pedido.PedidoRequestDTO;
+import com.cddigital.cardapio_digital.dto.response.pedido.AlterarStatusPedidoResponseDTO;
+import com.cddigital.cardapio_digital.dto.response.pedido.ListarPedidoDTO;
+import com.cddigital.cardapio_digital.dto.response.pedido.PedidoResponseDTO;
 import com.cddigital.cardapio_digital.service.PedidoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
