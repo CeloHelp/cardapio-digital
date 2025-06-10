@@ -36,6 +36,7 @@ public class ProdutoService {
         produto.setStatus(StatusGlobal.ATIVO);
 
 
+
         BeanUtils.copyProperties(produtoRequestDTO, produto);
         produtoRepository.save(produto);
 
@@ -54,7 +55,9 @@ public AlterarStatusProdutoResponseDTO AlterarStatusProduto(AlterarStatusProduto
         Produto produto = produtoRepository.findById(inativarProdutoRequestDTO.idProduto())
                 .orElseThrow(()  -> new ProdutoNaoEncontradoException(inativarProdutoRequestDTO.idProduto()));
 
-    produtoRepository.save(produto);
+        produto.setStatus(inativarProdutoRequestDTO.status());
+
+     produtoRepository.save(produto);
 
         return new AlterarStatusProdutoResponseDTO(
                 "Produto" + produto.getId() + " alterado com sucesso para " + produto.getStatus()
@@ -69,7 +72,7 @@ public EditarProdutoResponseDTO editarProduto(UUID id, EditarProdutoRequestDTO e
 
 
 
-        BeanUtils.copyProperties(editarProdutoRequestDTO, produto, "id");
+        BeanUtils.copyProperties(editarProdutoRequestDTO, produto, "id"); // <- propriedade a ser ignorada
         produtoRepository.save(produto);
 
         return EditarProdutoResponseDTO.fromEntity(produto);

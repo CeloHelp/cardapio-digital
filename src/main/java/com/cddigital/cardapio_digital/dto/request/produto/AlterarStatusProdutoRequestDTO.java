@@ -10,4 +10,5 @@ public record AlterarStatusProdutoRequestDTO(
         UUID idProduto,
         StatusGlobal status
 ) {
+
 }
