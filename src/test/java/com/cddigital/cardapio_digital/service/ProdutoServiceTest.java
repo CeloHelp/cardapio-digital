@@ -1,11 +1,15 @@
 package com.cddigital.cardapio_digital.service;
 
 import com.cddigital.cardapio_digital.dto.request.produto.AlterarStatusProdutoRequestDTO;
+import com.cddigital.cardapio_digital.dto.request.produto.ProdutoRequestDTO;
 import com.cddigital.cardapio_digital.dto.response.produto.AlterarStatusProdutoResponseDTO;
+import com.cddigital.cardapio_digital.dto.response.produto.ProdutoResponseDTO;
+import com.cddigital.cardapio_digital.entity.Categoria;
 import com.cddigital.cardapio_digital.entity.Produto;
 import com.cddigital.cardapio_digital.enums.StatusGlobal;
 import com.cddigital.cardapio_digital.exceptions.costumized.ProdutoNaoEncontradoException;
 import com.cddigital.cardapio_digital.repository.ProdutoRepository;
+import jakarta.validation.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,6 +39,105 @@ class ProdutoServiceTest {
 
     @InjectMocks
     ProdutoService produtoService;
+
+
+
+
+
+
+
+
+
+    @Test
+    @DisplayName("Should create a product when everything is OK ")
+
+
+    void cadastrarProdutoCase1() {
+
+        Categoria categoria = new Categoria();
+        categoria.setId(UUID.randomUUID());       // criando categoria (objeto auxiliar) //
+        categoria.setNome("Lanches");
+
+
+
+        UUID id = UUID.randomUUID();     // criando o produto //
+        Produto produto = new Produto();
+
+        produto.setNome(produto.getNome());
+        produto.setDescricao(produto.getDescricao());
+        produto.setPreco(produto.getPreco());
+        produto.setImagemUrl(produto.getImagemUrl());
+        produto.setStatus(StatusGlobal.ATIVO);
+        produto.setCategoria(categoria);
+        ProdutoRequestDTO produtoRequestDTO =
+                new ProdutoRequestDTO(produto.getNome(), produto.getDescricao(), produto.getPreco(), produto.getImagemUrl(), categoria.getId());
+
+
+        Mockito.when(produtoRepository.save(Mockito.any())).thenReturn(produto);
+
+        ProdutoResponseDTO responseDTO = produtoService.cadastrarProduto(produtoRequestDTO);
+
+        Assertions.assertEquals(produto.getNome(), responseDTO.nome());
+        Assertions.assertEquals(produto.getDescricao(), responseDTO.descricao());
+        Assertions.assertEquals(produto.getPreco(), responseDTO.preco());
+        Assertions.assertEquals(produto.getImagemUrl(), responseDTO.imagemUrl());
+        Assertions.assertEquals(produto.getStatus(), responseDTO.status());
+
+        Mockito.verify(produtoRepository).save(Mockito.any());
+
+
+
+    }
+
+    @Test
+    @DisplayName("Should Throw a Exception when product registration is someting null ")
+    void cadastrarProdutoCase2() {
+
+        Categoria categoria = new Categoria();
+        categoria.setId(UUID.randomUUID());       // criando categoria (objeto auxiliar) //
+        categoria.setNome(null);
+
+
+
+        UUID id = UUID.randomUUID();     // criando o produto //
+        Produto produto = new Produto();
+
+        produto.setNome(produto.getNome());
+        produto.setDescricao(produto.getDescricao());
+        produto.setPreco(produto.getPreco());
+        produto.setImagemUrl(produto.getImagemUrl());
+        produto.setStatus(StatusGlobal.ATIVO);
+        produto.setCategoria(categoria);
+
+
+        ProdutoRequestDTO dtoInvalido =
+        new ProdutoRequestDTO(null, null, null, produto.getImagemUrl(), null);
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+
+        Set<ConstraintViolation<ProdutoRequestDTO>> violations = validator.validate(dtoInvalido);
+
+        Assertions.assertFalse(violations.isEmpty());
+
+        violations.forEach(violation -> System.out.println(violation.getMessage()));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
 
 
 
@@ -54,11 +158,15 @@ class ProdutoServiceTest {
 
         Assertions.assertEquals(StatusGlobal.INATIVO, StatusGlobal.valueOf(produto.getStatus()));
 
+
+
+
+
+
+
+
+
         Mockito.verify(produtoRepository).save(produto);
-
-
-
-
 
 
 
@@ -73,17 +181,20 @@ class ProdutoServiceTest {
         UUID id = UUID.randomUUID();
         Produto produto = new Produto();
         produto.setId(id);
-        produto.setStatus(StatusGlobal.ATIVO);
+        produto.setStatus(StatusGlobal.ATIVO); // criando o objeto
 
-        Mockito.when(produtoRepository.findById(id)).thenReturn(Optional.empty());
+        Mockito.when(produtoRepository.findById(id)).thenReturn(Optional.empty()); // simulando que o produto não foi encontrado no banco de dados
 
-        Exception thrown = Assertions.assertThrows(ProdutoNaoEncontradoException.class, () -> {
+        Exception thrown = Assertions.assertThrows(ProdutoNaoEncontradoException.class, () -> {  // lançando a exception no seguinte fluxo
+
+            // simulando a requisição do usuário  como ativo (status padrão)
             AlterarStatusProdutoRequestDTO requestDTO = new AlterarStatusProdutoRequestDTO(id, StatusGlobal.ATIVO);
+
             produtoService.AlterarStatusProduto(requestDTO);
 
         });
 
-        Assertions.assertEquals("Produto com ID " + id + " nao encontrado", thrown.getMessage());
+        Assertions.assertEquals("Produto com ID " + id + " nao encontrado", thrown.getMessage()); // simulando mensagem da exception
 
     }
 }

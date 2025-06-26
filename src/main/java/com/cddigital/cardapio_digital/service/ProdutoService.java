@@ -11,6 +11,7 @@ import com.cddigital.cardapio_digital.entity.Produto;
 import com.cddigital.cardapio_digital.enums.StatusGlobal;
 import com.cddigital.cardapio_digital.exceptions.costumized.ProdutoNaoEncontradoException;
 import com.cddigital.cardapio_digital.repository.ProdutoRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class ProdutoService {
         this.produtoRepository = produtoRepository;
     }
 
-    public ProdutoResponseDTO cadastrarProduto(final ProdutoRequestDTO produtoRequestDTO) {
+    public ProdutoResponseDTO cadastrarProduto( @Valid final ProdutoRequestDTO produtoRequestDTO) {
         var produto = new Produto();
 
         produto.setStatus(StatusGlobal.ATIVO);

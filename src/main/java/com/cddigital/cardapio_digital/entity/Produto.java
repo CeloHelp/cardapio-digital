@@ -2,6 +2,7 @@ package com.cddigital.cardapio_digital.entity;
 
 import com.cddigital.cardapio_digital.enums.StatusGlobal;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -12,8 +13,12 @@ public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @NotNull
     private String nome;
+    @NotNull
     private String descricao;
+    @NotNull
     private BigDecimal preco;
     private String imagemUrl;
 
@@ -21,6 +26,7 @@ public class Produto {
     @Column(nullable = false)
     private StatusGlobal status = StatusGlobal.ATIVO;
     @ManyToOne
+    @NotNull
    private  Categoria categoria;
 
     public UUID getId() {
