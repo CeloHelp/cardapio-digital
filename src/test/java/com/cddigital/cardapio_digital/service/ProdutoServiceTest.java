@@ -2,7 +2,9 @@ package com.cddigital.cardapio_digital.service;
 
 import com.cddigital.cardapio_digital.dto.request.produto.AlterarStatusProdutoRequestDTO;
 import com.cddigital.cardapio_digital.dto.request.produto.ProdutoRequestDTO;
+import com.cddigital.cardapio_digital.dto.request.produto.EditarProdutoRequestDTO;
 import com.cddigital.cardapio_digital.dto.response.produto.AlterarStatusProdutoResponseDTO;
+import com.cddigital.cardapio_digital.dto.response.produto.EditarProdutoResponseDTO;
 import com.cddigital.cardapio_digital.dto.response.produto.ProdutoResponseDTO;
 import com.cddigital.cardapio_digital.entity.Categoria;
 import com.cddigital.cardapio_digital.entity.Produto;
@@ -24,6 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -196,5 +200,65 @@ class ProdutoServiceTest {
 
         Assertions.assertEquals("Produto com ID " + id + " nao encontrado", thrown.getMessage()); // simulando mensagem da exception
 
+    }
+
+    @Test
+    @DisplayName("Should edit produto when everything is Ok")
+    void editarProdutoCase1() {
+        UUID id = UUID.randomUUID();
+        Produto produto = new Produto();
+        produto.setId(id);
+        produto.setNome("Produto Antigo");
+        produto.setDescricao("Descricao Antiga");
+        produto.setPreco(BigDecimal.valueOf(10.0));
+        produto.setImagemUrl("url-antiga");
+        produto.setStatus(StatusGlobal.ATIVO);
+
+        EditarProdutoRequestDTO editarDTO = new EditarProdutoRequestDTO(
+                "Produto Novo", "Descricao Nova", BigDecimal.valueOf(20.0), "url-nova"
+        );
+
+        Mockito.when(produtoRepository.findById(id)).thenReturn(Optional.of(produto));
+        Mockito.when(produtoRepository.save(Mockito.any())).thenReturn(produto);
+
+        EditarProdutoResponseDTO responseDTO = produtoService.editarProduto(id, editarDTO);
+
+        Assertions.assertEquals("Produto Novo", responseDTO.nome());
+        Assertions.assertEquals("Descricao Nova", responseDTO.descricao());
+        Assertions.assertEquals(BigDecimal.valueOf(20.0), responseDTO.preco());
+        Assertions.assertEquals("url-nova", responseDTO.imagemUrl());
+        Mockito.verify(produtoRepository).save(produto);
+    }
+
+    @Test
+    @DisplayName("Should throw Exception when editing a produto that does not exist")
+    void editarProdutoCase2() {
+        UUID id = UUID.randomUUID();
+        EditarProdutoRequestDTO editarDTO = new EditarProdutoRequestDTO(
+                "Produto Novo", "Descricao Nova", BigDecimal.valueOf(20.0), "url-nova"
+        );
+        Mockito.when(produtoRepository.findById(id)).thenReturn(Optional.empty());
+        Exception thrown = Assertions.assertThrows(ProdutoNaoEncontradoException.class, () -> {
+            produtoService.editarProduto(id, editarDTO);
+        });
+        Assertions.assertEquals("Produto com ID " + id + " nao encontrado", thrown.getMessage());
+    }
+
+    @Test
+    @DisplayName("Should list only active produtos")
+    void listarProdutosCase1() {
+        Produto produto1 = new Produto();
+        produto1.setId(UUID.randomUUID());
+        produto1.setNome("Produto 1");
+        produto1.setStatus(StatusGlobal.ATIVO);
+        Produto produto2 = new Produto();
+        produto2.setId(UUID.randomUUID());
+        produto2.setNome("Produto 2");
+        produto2.setStatus(StatusGlobal.ATIVO);
+        List<Produto> produtos = List.of(produto1, produto2);
+        Mockito.when(produtoRepository.findByStatus(StatusGlobal.ATIVO)).thenReturn(produtos);
+        List<?> result = produtoService.listarProdutos();
+        Assertions.assertEquals(2, result.size());
+        Mockito.verify(produtoRepository).findByStatus(StatusGlobal.ATIVO);
     }
 }
