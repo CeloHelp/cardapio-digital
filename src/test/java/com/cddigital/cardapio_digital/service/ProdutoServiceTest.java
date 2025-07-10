@@ -94,7 +94,7 @@ class ProdutoServiceTest {
     }
 
     @Test
-    @DisplayName("Should Throw a Exception when product registration is someting null ")
+    @DisplayName("Should Throw a Exception when product registration is something null ")
     void cadastrarProdutoCase2() {
 
         Categoria categoria = new Categoria();
